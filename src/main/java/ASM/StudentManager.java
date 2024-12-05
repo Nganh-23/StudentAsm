@@ -1,10 +1,9 @@
 package ASM;
 
 import ASM.Student;
-
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.ArrayList;
-import java.util.Comparator;
-
 
 // Class StudentManager manages the student list and operations on students
 // Lớp StudentManager quản lý danh sách sinh viên và các thao tác với sinh viên
@@ -19,6 +18,7 @@ public class StudentManager {
     // Thêm sinh viên vào danh sách
     public void addStudent(Student student) {
         students.add(student);
+        System.out.println("Student added successfully.");
     }
 
     // Edit student information by ID
@@ -28,6 +28,7 @@ public class StudentManager {
             if (student.getId().equals(id)) {
                 student.setName(newName);
                 student.setMarks(newMarks);
+                System.out.println("Student updated successfully.");
                 return;
             }
         }
@@ -35,33 +36,53 @@ public class StudentManager {
     }
 
     // Delete a student from the list
-    // Xóa sinh viên khỏi danh sách
     public void deleteStudent(String id) {
-        students.removeIf(student -> student.getId().equals(id));
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getId().equals(id)) {
+                students.remove(i);
+                System.out.println("Student deleted successfully.");
+                // Điều chỉnh chỉ số sau khi xóa
+                i--;
+                return;
+            }
+        }
+        System.out.println("Student with ID: " + id + " not found.");
     }
 
     // Search for a student by ID
     // Tìm kiếm sinh viên theo mã
-    public Student searchStudent(String id) {
-        for (Student student : students) {
-            if (student.getId().equals(id)) {
-                return student;
+    public Student searchById(String id) {
+        for (Student student : students) { // Duyệt qua danh sách sinh viên
+            if (id.equals(student.getId())) { // So sánh mã sinh viên
+                return student; // Trả về sinh viên nếu tìm thấy
             }
         }
-        return null;
+        return null; // Trả về null nếu không tìm thấy
     }
 
-    // Sort students by marks in descending order
-    // Sắp xếp sinh viên theo điểm từ cao đến thấp
+
+    // Sắp xếp sinh viên theo điểm từ cao đến thấp bằng thuật toán Insertion Sort
+    // Sort students by marks in descending order using Insertion Sort
     public void sortStudentsByMarks() {
-        students.sort(Comparator.comparingDouble(Student::getMarks).reversed());
+        for (int i = 1; i < students.size(); i++) {
+            Student key = students.get(i);
+            int j = i - 1;
+
+
+            while (j >= 0 && students.get(j).getMarks() < key.getMarks()) {
+                students.set(j + 1, students.get(j));
+                j = j - 1;
+            }
+            students.set(j + 1, key);
+        }
+        System.out.println("Students sorted by marks in descending order.");
     }
 
     // Display the entire list of students
     // Hiển thị toàn bộ danh sách sinh viên
     public void displayAllStudents() {
         if (students.isEmpty()) {
-            System.out.println("Student list is empty.");
+            System.out.println("No students available.");
         } else {
             for (Student student : students) {
                 System.out.println(student);
