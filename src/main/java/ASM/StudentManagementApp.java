@@ -55,7 +55,7 @@ public class StudentManagementApp {
                 case 4:
                     System.out.print("Enter Student ID to search: ");
                     String searchId = scanner.nextLine();
-                    Student foundStudent = manager.searchStudent(searchId);
+                    Student foundStudent = manager.searchById(searchId);
                     if (foundStudent != null) {
                         System.out.println("Student Information: " + foundStudent);
                     } else {
@@ -65,7 +65,7 @@ public class StudentManagementApp {
 
                 case 5:
                     manager.sortStudentsByMarks();
-                    System.out.println("Students have been sorted by marks.");
+                    manager.displayAllStudents(); // Hiển thị danh sách sau khi sắp xếp
                     break;
 
                 case 6:
